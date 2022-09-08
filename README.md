@@ -14,4 +14,5 @@ faire un clic gauche prolongé. Le carré rouge qui apparaît représente la lar
 Faites un carré rouge suffisamment petit pour garder l'épaisseur des murs du labyrinthe.
 Une fois que le carré rouge est de la bonne taille, faire un clic droit.
 Vous pouvez ensuite refaire les mêmes commandes que plus haut.
+
 Tip : bloquer l'entrée du labyrinthe derrière le début du chemin empêche le script de chercher des chemins en dehors du labyrinthe.
