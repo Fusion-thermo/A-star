@@ -8,12 +8,12 @@ from time import time, sleep
 
 hauteur, largeur=500, 500
 cote_depart=20
-premier_clic_droit=True
+nombre_clic_droit=0
 laby=False
 
 
 def quadrillage(coter=cote_depart):
-	global cote, grille, l_grille, L_grille,premier_clic_droit,laby
+	global cote, grille, l_grille, L_grille,nombre_clic_droit,laby
 	Canevas.delete(ALL)
 	cote=int(coter)
 	for i in range((hauteur-int(cases_hauteur.get()))//cote):
@@ -22,7 +22,7 @@ def quadrillage(coter=cote_depart):
 	grille=np.ones(((hauteur-int(cases_hauteur.get()))//cote, (largeur-int(cases_largeur.get()))//cote))
 	l_grille=(hauteur-int(cases_hauteur.get()))//cote-1
 	L_grille=(largeur-int(cases_largeur.get()))//cote-1
-	premier_clic_droit=True
+	nombre_clic_droit=0
 
 def restaurer():
 	for x in range(L_grille+1):
@@ -78,18 +78,18 @@ def Clic_gauche_release(event):
 				grille[int(y1//cote), int(x1//cote)]=100
 
 def Clic_droit(event):
-	global premier_clic_droit,x_depart, y_depart,x_arrivee, y_arrivee
+	global nombre_clic_droit,x_depart, y_depart,x_arrivee, y_arrivee
 	x=(event.x//cote)*cote
 	y=(event.y//cote)*cote
 	if -1<event.y//cote<l_grille+1 and -1<event.x//cote<L_grille+1:
-		if premier_clic_droit==True:
+		if nombre_clic_droit==0:
 			Canevas.create_rectangle(x, y, x+cote, y+cote, fill="green")
-			premier_clic_droit=False
+			nombre_clic_droit+=1
 			grille[event.y//cote, event.x//cote]=-1
 			x_depart, y_depart=event.y//cote, event.x//cote
-		elif premier_clic_droit==False:
+		elif nombre_clic_droit==1:
 			Canevas.create_rectangle(x, y, x+cote, y+cote, fill="red")
-			premier_clic_droit=2
+			nombre_clic_droit+=2
 			grille[event.y//cote, event.x//cote]=-1
 			x_arrivee, y_arrivee=event.y//cote, event.x//cote
 
@@ -215,7 +215,7 @@ def Ouvrir():
 	Canevas.bind('<Button-3>',  laby_vers_grille)
 
 def laby_vers_grille(event):
-	global cote, grille, l_grille, L_grille,premier_clic_droit,hauteur, largeur, laby
+	global cote, grille, l_grille, L_grille,nombre_clic_droit,hauteur, largeur, laby
 	
 	Canevas.unbind('<ButtonRelease-1>')
 	Canevas.unbind('<Button-3>')
@@ -238,7 +238,7 @@ def laby_vers_grille(event):
 				Canevas.create_rectangle(cote*j, cote*i, cote*j+cote, cote*i+cote,fill='black')
 	
 	
-	premier_clic_droit=True
+	nombre_clic_droit=0
 	laby=False
 
 fenetre=Tk()
