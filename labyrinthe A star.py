@@ -6,7 +6,7 @@ import os
 from time import time, sleep
 
 
-hauteur, largeur=500, 500
+hauteur, largeur=600, 600
 cote_depart=20
 nombre_clic_droit=0
 laby=False
@@ -16,12 +16,14 @@ def quadrillage(coter=cote_depart):
 	global cote, grille, l_grille, L_grille,nombre_clic_droit,laby
 	Canevas.delete(ALL)
 	cote=int(coter)
-	for i in range((hauteur-int(cases_hauteur.get()))//cote):
-		for j in range((largeur-int(cases_largeur.get()))//cote):
+	hauteur_grille=(hauteur-int(cases_hauteur.get()))//cote
+	largeur_grille=(largeur-int(cases_largeur.get()))//cote
+	for i in range(hauteur_grille):
+		for j in range(largeur_grille):
 			Canevas.create_rectangle(cote*j, cote*i, cote*j+cote, cote*i+cote)
-	grille=np.ones(((hauteur-int(cases_hauteur.get()))//cote, (largeur-int(cases_largeur.get()))//cote))
-	l_grille=(hauteur-int(cases_hauteur.get()))//cote-1
-	L_grille=(largeur-int(cases_largeur.get()))//cote-1
+	grille=np.ones((hauteur_grille, largeur_grille))
+	l_grille=hauteur_grille-1
+	L_grille=largeur_grille-1
 	nombre_clic_droit=0
 
 def restaurer():
@@ -161,11 +163,9 @@ def astar():
 	
 
 	if len(openlist)==0 and (noeud_courant[1]!=x_arrivee or noeud_courant[2]!=y_arrivee):
-		conclusion=Label(fenetre,text="Pas de chemin possible")
-		conclusion.pack()
+		conclusion.set("Pas de chemin possible")
 	else:
-		conclusion=Label(fenetre,text="Chemin trouvé.")
-		conclusion.pack()
+		conclusion.set("Chemin trouvé")
 		x=x_arrivee
 		y=y_arrivee
 		parent=noeud_courant[4]
@@ -183,8 +183,7 @@ def astar():
 		#Canevas.create_rectangle(y_depart*cote,x_depart*cote, y_depart*cote+cote, x_depart*cote+cote, fill="green")
 		liste_dessin.append((x_depart,y_depart,"green"))
 	
-	temps = Label(fenetre, text=str(time()-debut_temps)+" s")
-	temps.pack()
+	temps.set(str(round(time()-debut_temps,4))+" s")
 
 	dessin()
 
@@ -287,6 +286,12 @@ Canevas.bind('<Button-3>',  Clic_droit)
 
 Bouton1 = Button(fenetre,  text = 'Quitter',  command = fenetre.destroy)
 Bouton1.pack(side="bottom")
+conclusion=StringVar()
+Label(fenetre,textvariable=conclusion).pack()
+conclusion.set("En attente")
+temps=StringVar()
+Label(fenetre,textvariable=temps).pack()
+temps.set("0 s")
 
 
 menubar = Menu(fenetre)
